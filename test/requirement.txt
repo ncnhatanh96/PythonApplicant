@@ -1,2 +1,2 @@
-faker=14.2.0
-aiohttp=1.8.1
+faker==14.2.0
+aiohttp==1.8.1
