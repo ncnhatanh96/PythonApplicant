@@ -1,0 +1,64 @@
+version: '3.4'
+
+networks:
+ common-net:
+  driver: bridge
+
+services:
+
+  outcubator-app-db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: '1'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+      - common-net
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      
+  outcubator-app:
+    build: .
+    restart: on-failure
+    volumes:
+      - .:/code
+    ports:
+      - "9090:9090"
+    depends_on:
+      -  outcubator-app-db
+      -  outcubator-kong
+    networks:
+      - common-net
+
+  outcubator-kong:
+    container_name: outcubator-kong
+    image: kong
+    environment:
+      KONG_PROXY_LISTEN: 0.0.0.0:8000
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /usr/local/opt/kong/declarative/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_LOG_LEVEL: warn
+    volumes:
+      - ./kong/logs:/usr/local/opt/kong/logs       
+      - ./kong/logs/log.txt:/usr/local/opt/kong/logs/log.txt       
+      - ./kong/declarative:/usr/local/opt/kong/declarative
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://kong:8001"]
+      interval: 5s
+      timeout: 2s
+      retries: 1
+    ports:
+      - "8001:8001"
+      - "8000:8000"
+    networks:
+      - common-net
+    

@@ -1,0 +1,15 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+- name: outcubator-applicant
+  url: http://outcubator-app:9090/applicant
+  routes:
+  - name: applicant
+    paths:
+    - /applicant
+
+consumers:
+- username: my-user
+  keyauth_credentials:
+  - key: my-key

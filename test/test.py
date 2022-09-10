@@ -25,27 +25,12 @@ def timed(func):
         duration = "{name:<30} finished in {elapsed:.2f} seconds".format(
             name=func.__name__, elapsed=time.time() - start
         )
+        print(duration)
         timed.durations.append(duration)
         return result
     return wrapper
 
 timed.durations = []
-
-@timed
-def async_aiohttp_get_all(urls):
-    """
-    performs asynchronous get requests
-    """
-    async def get_all(urls):
-        async with aiohttp.ClientSession() as session:
-            async def fetch(url):
-                async with session.get(url) as response:
-                    return await response.json()
-            return await asyncio.gather(*[
-                fetch(url) for url in urls
-            ])
-    # call get_all as a sync function to be used in a sync context
-    return sync.async_to_sync(get_all)(urls)
 
 @timed
 def async_aiohttp_post(urls):
@@ -62,10 +47,8 @@ def async_aiohttp_post(urls):
             ])
     return sync.async_to_sync(post)(urls)
 
-
 if __name__ == '__main__':
-    urls = ['http://192.168.56.104:9090/applicant']*1000
-
+    urls = ['http://host.docker.internal:8000/applicant']*1000
     async_aiohttp_post(urls)
     print('----------------------')
     [print (duration) for duration in timed.durations] 
