@@ -1,4 +1,4 @@
-# PythonApplicant
+# Python applicant
 
 * [Introduction](Introduction)
 * [Usage](#Usage)
