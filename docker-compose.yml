@@ -6,7 +6,7 @@ networks:
 
 services:
 
-  outcubator-app-db:
+  app-db:
     image: mysql
     environment:
       MYSQL_ROOT_PASSWORD: '1'
@@ -21,7 +21,7 @@ services:
       timeout: 20s
       retries: 10
       
-  outcubator-app:
+  app:
     build: .
     restart: on-failure
     volumes:
@@ -29,13 +29,13 @@ services:
     ports:
       - "9090:9090"
     depends_on:
-      -  outcubator-app-db
-      -  outcubator-kong
+      -  app-db
+      -  kong
     networks:
       - common-net
 
-  outcubator-kong:
-    container_name: outcubator-kong
+  kong:
+    container_name: kong
     image: kong
     environment:
       KONG_PROXY_LISTEN: 0.0.0.0:8000
