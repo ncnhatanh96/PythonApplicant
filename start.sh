@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo -n "Outcubator services are deploying..."
+echo -n "Services are deploying..."
 sudo docker compose up --detach
-echo -n "Outcubator services successfully deployed."
+echo -n "Services successfully deployed."
 
 while true; do
     echo 'Select:'
