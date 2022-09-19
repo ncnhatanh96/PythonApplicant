@@ -5,7 +5,7 @@
 
 Introduction
 -----------------
-Applicant service with: <br />
+Python microservices project includes : <br />
      - Kong API gateway <br />
      - Python application <br />
      - MySQL database <br />
