@@ -5,10 +5,10 @@
 
 Introduction
 -----------------
-Applicant service with:
-    - Kong API gateway
-    - Python application
-    - MySQL database
+Applicant service with: <br />
+     - Kong API gateway <br />
+     - Python application <br />
+     - MySQL database <br />
 
 Usage
 -----------------
